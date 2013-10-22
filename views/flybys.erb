@@ -1,0 +1,115 @@
+<tr>
+	<td colspan="2">
+		<h1>Upcoming ISS flybys near 
+			<% if @nearby %>
+				<%= @nearby.name %>, <%= @nearby.country_name %>
+			<% else %>
+				[unknown location]
+			<% end %>
+		</h1>
+		<%= erb :info %>
+	</td>
+</tr>
+<tr>
+	<td colspan="2">
+		<% if @flybys.size == 0  %>
+			<p>No flybys were found in the next 10 days for <%= @latitude %>, <%= @longitude %></p>
+			<p>ISS flybys are "seasonal" and may not be available in the next few weeks. Come back soon, or let your calendar software alert you of any upcoming flybys.</p>
+		<% else %>
+			<p>For the next 10 days, the following flybys were found for <%= @latitude %>, <%= @longitude %> in time zone "<%= @timezone.timezone_id %>." Interesting flybys (based on duration, magnitude and altitude) are <span style="background:yellow;">marked in yellow</span>. Follow the location link to get the sky chart of a flyby. Be warned that these predictions may change constantly over the days leading up to a flyby, as the flight parameters or orbital elements of the ISS are constantly updated. Cloudiness predictions are based on the Nowegian Meteorological's global weather data and may not be accurate.</p>
+			<table width="100%">
+				<tr>
+					<td width="1%"><strong>Date</strong></td>
+					<td width="14%"><strong></strong></td>
+					<td width="10%"><strong>Start</strong></td>
+					<td width="10%"><strong>End</strong></td>
+					<td width="10%"><strong>Duration</strong></td>
+					<td width="10%"><strong>Magnitude</strong></td>
+					<td width="25%"><strong>Location</strong></td>
+					<td width="10%"><strong><center>Clouds</center></strong></td>
+				</tr>
+				<% @flybys.each do |flyby| %>
+					<% top = flyby.location.split(" ")[2][0..1].to_i %>
+					<% if ( top >= 50 ) && ( flyby.duration > 3 ) && ( flyby.magnitude.to_f <= -2 ) %>
+						<tr style="background:yellow">
+					<% else %>
+						<tr>
+					<% end %>
+						<td>
+							<%= flyby.startdatetime.strftime('%a') %>
+						</td>
+						<td>
+							<%= flyby.startdatetime.in_time_zone(@timezone.timezone_id).day %>
+							<%= flyby.startdatetime.in_time_zone(@timezone.timezone_id).strftime('%b') %>
+							<%= flyby.startdatetime.in_time_zone(@timezone.timezone_id).year %>
+						</td>
+						<td><%= flyby.startdatetime.in_time_zone(@timezone.timezone_id).strftime('%X') %></td>
+						<td><%= flyby.enddatetime.in_time_zone(@timezone.timezone_id).strftime('%X') %></td>
+						<td>
+							<% if flyby.duration > 3 %>
+								<strong>> <%= flyby.duration %> mins</strong>
+							<% else %>
+								> <%= flyby.duration %> mins
+							<% end %>
+						</td>
+						<td>
+							<% if flyby.magnitude.to_f <= -2 %>
+								<strong><%= flyby.magnitude %></strong>
+							<% else %>
+								<%= flyby.magnitude %>
+							<% end %>
+						</td>
+						<td>
+							<% if top >= 50 %>
+								<strong><a href="<%= flyby.description %>" target="_blank"><%= flyby.location %></a></strong>
+							<% else %>
+								<a href="<%= flyby.description %>"><%= flyby.location %></a>
+							<% end %>
+						</td>
+						<% clouds = cloudiness( @cloudpredictions, flyby.startdatetime ) %>
+						<% if clouds == -1 %>
+							<td>
+								<center>unknown</center>
+							</td>
+						<% else %>
+							<% if clouds < 34 %>
+								<td style="color:#008b00;">
+							<% elsif clouds > 66 %>
+								<td style="color:#8b0000;">
+							<% else %>
+								<td style="color:#8b8b00;">
+							<% end %>
+								<center><%= clouds %>%</center>
+							</td>
+						<% end %>
+					</tr>
+				<% end %>
+			</table>
+		<% end %>
+	</td>
+</tr>
+<tr>
+	<td witdh="50%" valign="top">
+		<p>
+			<div align="center" id="map" style="width: 400px; height: 400px;overflow: hidden;"><br/></div>
+		</p>
+		<center>
+			Latitude: &nbsp;
+			<span id="lat" style="font-weight:bold;"></span> &nbsp;
+			Longitude: &nbsp;
+			<span id="lng" style="font-weight:bold;"></span> &nbsp;
+		</center>
+	</td>
+	<td width="50%" valign="top">
+		<h3><a id="subscribe"><img style="float:right; padding:0px; margin: 0px; margin-left:15px; margin-bottom:15px; border:0;" src="subscribe.png">Subscribe with your calendar software</a></h3>
+		<p>Subscribe (with your calendar software) by clicking the above link and be automatically updated about future flybys of the International Space Station. <font size="-1">(<a onclick="showPart('help');showHelp('subscribeHelp')" href="#subscribeHelpLink">Learn how to subscribe</a>)</font></p>
+
+		<h3><a id="download"><img style="float:right; padding:0px; margin: 0px; margin-left:15px; margin-bottom:15px; border:0;" src="calendar.png">Download a calendar of flybys</a></h3>
+		<p>After downloading this <i>iCalendar</i> file, load it into your calendar software (iCal, Google Calendar, Outlook, ...) and you will have a list of the upcoming ISS flybys in the next 10 days. <font size="-1">(<a href="#parts" onClick="showPart('options')" style="text-decoration: underline;">View options</a>)</font></p>
+
+		<h3><a href="/" id="home" target="_blank"><img style="float:right; padding:0px; margin: 0px; margin-left:15px; margin-bottom:15px; border:0;" src="browser.png">Select a different location</a></h3>
+		
+		<a id="heavensabove"/>
+
+	</td>
+</tr>

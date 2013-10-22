@@ -1,0 +1,60 @@
+<tr>
+	<td colspan="2" valign="top">
+		
+		<div style="float:right">
+			<p>
+				<img width="25px" src="/firefox.png"/>
+				<img width="25px" src="/safari.png"/>
+				<img width="25px" src="/chrome.png"/>
+				<img width="25px" src="/opera.png"/>
+			</p>
+		</div>
+
+		<h1>Look up (and witness an ISS flyby)</h1>
+		<p color="red">Unfortunately, Heavens Above, our provider of ISS flyby predictions, is receiving too many requests to handle our (and others') requests and blocking this service. We are looking into providing a solution.</p>
+
+		<p>Ever wanted to watch the International Space Station fly through the night sky over your own house? Keep your calendar up to date with
+                 upcoming visible flybys, in two simple steps.</p> 
+		
+		<%= erb :info %>
+
+	</td>
+</tr>
+<tr>
+	<td width="50%" valign="top">
+		<form action="#" onsubmit="showAddress(this.address.value); return false">
+			<h2>1. Pinpoint your location</h2>
+			<p style="text-align:center;">
+				Where are you?
+				<input type="text" name="address" value="Antwerp, Belgium" />
+				<input type="submit" value="Search!" />
+			</p>
+		</form>
+
+		<p>
+			<div align="center" id="map" style="width: 400px; height: 400px;overflow: hidden;"><br/></div>
+		</p>
+
+			<center>
+				Latitude: &nbsp;
+				<span id="lat" style="font-weight:bold;"></span> &nbsp;
+				Longitude: &nbsp;
+				<span id="lng" style="font-weight:bold;"></span> &nbsp;
+			</center>
+	</td>
+	<td width="50%" valign="top">
+		<h2>2. Get ISS flyby predictions</h2>
+		
+		<p>The following links automagically provide flyby predictions for your location.</p>
+		
+		<h3><a id="heavensabove"><img style="float:right; padding:0px; margin: 0px; margin-left:15px; margin-bottom:15px; border:0;" src="browser.png">View upcoming ISS flybys</a></h3>
+		<p>Besides many other satellites, <a href="http://heavens-above.com" target="_blank">heavens-above.com</a> allows you to view a list of visible flybys of the International Space Station, along with lots of supporting information.</p>
+
+		<h3><a id="download"><img style="float:right; padding:0px; margin: 0px; margin-left:15px; margin-bottom:15px; border:0;" src="calendar.png">Download a calendar of flybys</a></h3>
+		<p>After downloading this <i>iCalendar</i> file, load it into your calendar software (iCal, Google Calendar, Outlook, ...) and you will have a list of the upcoming ISS flybys in the next 10 days. <font size="-1">(<a href="#parts" onClick="showPart('options')" style="text-decoration: underline;">View options</a>)</font></p>
+
+		<h3><a id="subscribe"><img style="float:right; padding:0px; margin: 0px; margin-left:15px; margin-bottom:15px; border:0;" src="subscribe.png">Subscribe with your calendar software</a></h3>
+		<p>Subscribe (with your calendar software) by clicking the above link and be automatically updated about future flybys of the International Space Station. <font size="-1">(<a onclick="showPart('help');showHelp('subscribeHelp')" href="#subscribeHelpLink">Learn how to subscribe</a>)</font></p>
+
+	</td>
+</tr>

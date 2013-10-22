@@ -1,0 +1,164 @@
+<a name="parts"/>
+
+<div>
+	More information: 
+	<a href="#parts" onClick="showPart('basics')" style="text-decoration: underline;">ISS flyby basics</a>, 
+	<a href="#parts" onClick="showPart('help')" style="text-decoration: underline;">Help</a>,
+	<a href="#parts" onClick="showPart('options')" style="text-decoration: underline;">Options</a>,
+	<a href="#parts" onClick="showPart('about')" style="text-decoration: underline;">About</a> 
+</div>
+
+<div id="basics" style="display:none;">
+
+	<h3>Flybys of the International Space Station</h3>
+
+	<p>Currently being the second brightest object in the night sky (that is, besides the moon), the <a
+                   href="http://en.wikipedia.org/wiki/International_Space_Station" target="_blank">International Space Station</a> can easily be 
+	observed. The station is often visible as a very bright and sharp star-like dot that slowly moves across the night sky. If you're 
+	lucky (you can get lucky!), the ISS may be visible from horizon to horizon, flying right over your location, lasting up to a few 
+	minutes (the station flies at just under 28000 kilometers per hour).</p>
+
+	<p>In a <i>flyby season</i> (about a week, every few weeks, dependent on your location), the timing, location and lighting of the ISS
+                   is right so you can observe flybys. Visible flybys occur just after sunset, or before sunrise, when the station is basking in the sun
+                   (it flies about 350 kilometer high above the Earth), and you experience a dark night sky.</p>
+
+	<p>The space station is pretty big, about the size of a soccer/football field. Most of this are solar arrays, which not only collect
+                   a huge amount of energy, but reflect a lot of sunlight to earth, making the station easily visible. Still, the space on the inside of
+                   the station is 240 cubic meters. That's pretty big. Did you know that with a nice pair of binoculars, you can make out some of the
+                   station's shape? That's awesome. Do it.</p>
+
+</div>
+
+<div id="help" style="display:none;">
+
+	<h3>Help</h3>
+
+	<p><a href="#subscribeHelpLabel" name="subscribeHelpLabel" onclick="showHelp('subscribeHelp')">How do I subscribe to a calendar with my calendar software?</a></p>
+
+	<div id="subscribeHelp" style="display:none;">
+
+		<p>This websitelet adopts the iCalendar protocol to keep your calendar software updated with upcoming flybys. Most calendar 
+		software (like iCal, Outlook, Google Calendar, ...) support subscriptions to these <tt>.ics</tt> files via the <tt>webcal://</tt> 
+		protocol so your calendar is automatically updated with upcoming flybys.</p>
+
+		<p>The following shows the process of subscribing to a calendar with <strong>iCal</strong> on Mac OSX</p>
+
+		 <ol>
+			<li>Pinpoint your location on the map</li>
+			<li>Click the "Subscribe with your calendar software" link</li>
+			<li>Since iCal is associated with the <tt>text/calendar</tt> content-type, <tt>.ics</tt> files served through <tt>webcal://</tt> are automatically opened with iCal</li>
+			<li>iCal asks you whether you want to subscribe to the calendar, acknowledge</li>
+			<li>You can set up some options, make sure to set the <b>Auto-refresh</b> to every day, or every week (more frequent doesn't help anyway).</li>
+			<li>Click OK, and you're done.</li>
+		</ol>
+		
+		<p>Here's how to subscribe with <strong>Google Calendar</strong></p>
+
+		 <ol>
+			<li>Pinpoint your location on the map</li>
+			<li>Copy the URL of the "Subscribe with your calendar software" link</li>
+			<li>In Google Calendar, click the "Add/Add by URL" link under "Other Calendars" in the list on the left</li>
+			<li>Paste the link you have copied before</li>
+			<li>Click "Add" and you are ready to go</li>
+		</ol>
+
+		<p>I don't use Outlook or other calendar software, but the process should be similar to that of the above programs.</p>
+
+	</div>
+
+	<p><a href="#phoneHelpLink" name="phoneHelpLink" onclick="showHelp('phoneHelp')">How do I keep updated by syncing my phone?</a></p>
+		
+	<div id="phoneHelp" style="display:none;">
+
+		<p>If you can sync your phone with your calendar software, download or subscribe to calendars of upcoming ISS flybys, below, and
+                       make sure that your phone's calendar is synced. Five minutes ahead of a flyby, your phone will ring an alarm, and provide you
+                       with elementary information about the flyby. Obviously, this is only true if your calendar software and phone are capable of
+                       understanding iCalendar alarms. I'm using iCal on Mac OS X and an iPhone for this, which works great.</p>
+
+	</div>
+
+ 	<p><a href="#noresultsHelpLink" name="noresultsHelpLink" onclick="showHelp('noresultsHelp')">I'm not getting any results in my calendar. What's up with that?</a></p>
+
+	<div id="noresultsHelp" style="display:none;">
+
+		<p>If you're not getting any flybys in your calendar, that's probably because it's currently not the <i>season</i>, unfortunately 
+		... Visible flybys occur in (about) a week of consecutive days, and after such a season, you have to wait a few weeks for them to 
+		reappear. If you don't live too close the poles, you'll probably get some flybys soon. Subscribe to the calendar, and let your 
+		calendar software do the rest. You will be automatically notified when the new season starts!</p>
+
+	</div>
+	
+ 	<p><a href="#informationHelpLink" name="informationHelpLink" onclick="showHelp('informationHelp')">I don't understand the information in the calendar's events</a></p>
+
+	<div id="informationHelp" style="display:none;">
+
+		<p>An event is marked in your calendar with a title, such as "ISS -2.3". This denotes a flyby of the ISS, at <a
+                 href="http://en.wikipedia.org/wiki/Apparent_magnitude" target="_blank">apparent magnitude</a> -2.3. The magnitude tells you 
+		something about the brightness of the flyby. A lower magnitude equals a brighter flyby. The calendars only include flybys with a 
+		brightness below 0. A brightness of 0 can be observed when other stars are visible, and less than -1.5 is brighter than any other 
+		star. (a full moon may get well below -12)</p>
+
+		<p>The event provides a semi-cryptic description of the flight path, so you can expect where the station will be flying. An
+                       example of such a flight path is "12WSW - 80SSE - 10E". In this example, the station will become visible in West-South-West
+                       direction, at an altitude of 12 degrees (that's how high it is, 0 degrees is the horizon, 90 degrees is straight up). Next, the
+                       station will rise up to an altitude of 80 degrees, in a slight SSE direction, almost straight up. Finally, the station will
+                       disappear in Eastern direction.</p>
+
+		<p>The calendar event also provides an URL to more information of the flyby at <a href="http://heavens-above.com" target="_blank">heavens-above.com</a>.</p>
+
+	</div>
+
+</div>
+
+<div id="about" style="display:none;">
+
+	<h3>About "Look up"</h3>
+
+	<p><a href="http://lookup.liekens.net">lookup.liekens.net</a> is a websitelet (a one page web site with a minimalist service) whose 
+	sole purpose is to provide (automatically updated) calendars of upcoming ISS flybys, powered by data from 
+	<a href="http://heavens-above.com" target="_blank">heavens-above.com</a> (with permission). This service is merely an extra layer to 
+	generate electronic calendars in a common format. Technically, I'm taking Ruby along for a ride on Apache, Passenger, Rack and 
+	Sinatra.</p>
+	
+	<p>Concept, and realization of this websitelet is by 
+	<a href="http://anthony.liekens.net" target="_blank">Anthony Liekens</a>.</p>
+
+</div>
+
+<div id="options" style="display:none;">
+
+	<h3>Options</h3>
+	
+	<p>You may want to set the following options before downloading or subscribing to a calendar of flybys:</p>
+
+	<!--<p><input id="sunrise" type="checkbox" checked="true">Include flybys occurring before sunrise</input></p>-->
+	<!--<p><input id="sunset" type="checkbox" checked="true">Include flybys occurring after sunset</input></p>-->
+	<ul>
+		
+		<li>
+			Only show events with an <a href="http://en.wikipedia.org/wiki/Apparent_magnitude" target="_blank">apparant magnitude</a> of 
+			<select id="magnitude" onchange="updateURLs()">
+				<option value="10">any</option>
+				<option value="0" selected="true">0</option>
+				<option value="-1">-1</option>
+				<option value="-2">-2</option>
+			</select>
+			and brighter (lower magnitude = brighter flyby)
+		</li>
+		
+		<li>
+			<input id="alarm" type="checkbox" checked="true" onchange="updateURLs()">
+			Include an alarm, 
+			<select id="alarmtime" onchange="updateURLs()">
+				<option value="15">15</option>
+				<option value="10">10</option>
+				<option value="5" selected="true">5</option>
+				<option value="1">1</option>
+			</select>
+			minutes ahead of a flyby
+			</input>
+		</li>
+		
+	</ul>
+	
+</div>

@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+	<title>Look up (and witness an ISS flyby)</title>
+	<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAItTk_9kLM-yGn8beRXJKMxT33bYGn4veGwZSxS1rZp6hN1nHgRQE1Qfa1vj56Ecv7vx9BO1llZAvJg" type="text/javascript"></script>
+	<script type="text/javascript">
+	
+	function updateURLs() {
+		lat = document.getElementById("lat").innerHTML;
+		lng = document.getElementById("lng").innerHTML;
+		magnitude = document.getElementById("magnitude").value;
+		alarm = document.getElementById("alarm").value;
+		alarmtime = document.getElementById("alarmtime").value;
+		
+		document.getElementById("download").href="http://<%=request.env['HTTP_HOST']%>/iss.ics?lng=" + lng + "&lat=" + lat + "&mag=" + magnitude + "&alarm=" + alarm + "&alarmtime=" + alarmtime;
+		document.getElementById("subscribe").href="webcal://<%=request.env['HTTP_HOST']%>/iss.ics?lng=" + lng + "&lat=" + lat + "&mag=" + magnitude + "&alarm=" + alarm + "&alarmtime=" + alarmtime;
+		document.getElementById("heavensabove").href="http://<%=request.env['HTTP_HOST']%>/flybys?lng=" + lng + "&lat=" + lat;
+	}
+
+	// for each new latitude/longitude coordinate pair from google maps, set the references to the location throughout the document
+	function setLatLong( lat, lng ) {
+		document.getElementById("lat").innerHTML = lat.toFixed(7);
+		document.getElementById("lng").innerHTML = lng.toFixed(7);
+		updateURLs();
+	}
+	
+	// on loading a Google maps-map, set listeners that track movement on the map
+	function setMap(map, marker, center ) {
+		setLatLong( center.lat(), center.lng() );
+
+		GEvent.addListener( marker, "dragend", function() {
+			var point = marker.getPoint();
+			map.panTo( point );
+			setLatLong( point.lat(), point.lng() );
+
+		} );
+
+		GEvent.addListener( map, "moveend", function() {
+			map.clearOverlays();
+			var center = map.getCenter();
+			var marker = new GMarker( center, {draggable: true} );
+			map.addOverlay( marker );
+			setLatLong( center.lat(), center.lng() );
+
+			GEvent.addListener( marker, "dragend", function() {
+				var point = marker.getPoint();
+				map.panTo(point);
+				setLatLong( point.lat(), point.lng() );
+
+			} );
+
+		} );
+
+	}
+
+	// load Google maps functionality
+	function load() {
+		if( GBrowserIsCompatible() ) {
+			var map = new GMap2( document.getElementById( "map" ) );
+			map.addControl( new GSmallMapControl() );
+			map.addControl( new GMapTypeControl() );
+			map.setMapType( G_HYBRID_MAP );
+			<% if @latitude && @longitude %>
+				var center = new GLatLng( <%= @latitude %>, <%= @longitude %> );
+			<% else %>
+				var center = new GLatLng( 51.2031787, 4.4812766 );
+			<% end %>
+			map.setCenter( center, 6);
+			geocoder = new GClientGeocoder();
+			var marker = new GMarker( center, {draggable: true} );  
+			map.addOverlay( marker );
+			setMap( map, marker, center );
+		} else {
+			alert( "Your browser is not compatible to view Google Maps, so we cannot pinpoint your location and provide you with ISS data. We're very sorry about this ..." );
+		}
+	}
+
+	// on searching for an address, let google maps center to the location, etc
+	function showAddress( address ) {
+		var map = new GMap2( document.getElementById("map"));
+		map.addControl( new GSmallMapControl() );
+		map.addControl( new GMapTypeControl() );
+		map.setMapType( G_HYBRID_MAP); 
+		if( geocoder ) {
+			geocoder.getLatLng(
+				address,
+				function( point ) {
+					if( !point ) {
+						alert( address + " not found" );
+					} else {
+
+						map.clearOverlays();
+						map.setCenter( point, 14 );
+						var marker = new GMarker( point, {draggable: true} );  
+						map.addOverlay( marker );
+						setMap( map, marker, point )
+
+					}
+				}
+			);
+		}
+	}
+	
+	// shows part of the hidden blocks with more information, and hides all the others
+	function showPart( part ) {
+
+		var parts = new Array();
+		parts[0] = "basics";
+		parts[1] = "help";
+		parts[2] = "about";
+		parts[3] = "options";
+
+		for (i=0;i<parts.length;i++) {
+			if( part == parts[i] )
+				document.getElementById( parts[i] ).style.display = 'block';
+			else
+				document.getElementById( parts[i] ).style.display = 'none';
+		}		
+		
+	}
+	
+	// show part of the hidden help blocks
+	function showHelp( part ) {
+		document.getElementById( part ).style.display = 'block'
+	}
+	
+	</script>
+	
+	<style type="text/css">
+	body {font-family: Gill Sans, sans-serif}
+	a {color:#000;}
+	p {text-align: justify;}
+	</style>
+	
+</head>
+
+
+<body onload="load()" onunload="GUnload()" style="background-color:#000;background-image:url('/horizon.jpg');background-repeat:no-repeat;" >
+	<center>
+		<table width="900" cellpadding="10px" style="background-color:#fff;opacity:0.9;margin:50px;padding:15px;padding-top:0px;">
+			<%= yield %>
+			<tr>
+				<td colspan="2" align="center">
+					<script type="text/javascript"><!--
+					google_ad_client = "pub-7726730941948502";
+					/* 728x90, created 4/25/09 */
+					google_ad_slot = "2155816459";
+					google_ad_width = 728;
+					google_ad_height = 90;
+					//-->
+					</script>
+					<script type="text/javascript"
+					src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+					</script>
+					
+					<script type="text/javascript">
+					var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+					document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+					</script>
+					<script type="text/javascript">
+					try {
+					var pageTracker = _gat._getTracker("UA-3231609-5");
+					pageTracker._trackPageview();
+					} catch(err) {}</script>
+					
+					<p style="text-align:center;">
+						Concept and realisation by <a href="http://anthony.liekens.net">Anthony Liekens</a> - Flyby data by <a href="http://www.heavens-above.com">Heavens Above</a> - Mapping by <a href="http://maps.google.com">Google Maps</a> - Weather data by the <a href="http://api.met.no/">Norwegian Meteorological Institute</a> - Geolocation by <a href="http://www.geonames.org">Geonames</a>
+					</p>
+				</td>
+			</tr>
+		</table>
+	</center>
+
+</body>
+
+</html>
