@@ -7,6 +7,7 @@ require 'date'
 require 'active_support/all'
 require 'net/http'
 require 'rexml/document'
+require 'digest/md5'
 
 #require 'sinatra/reloader'
 
@@ -63,13 +64,50 @@ class Flyby
   attr_accessor :date, :starttime, :startdatetime, :endtime, :enddatetime, :magnitude, :location, :url, :description, :duration
 end
 
+def fetchxml( url, cache )
+  
+    if !File.exists?( cache ) || ( File.mtime( cache ) < Time.now - 24 * 60 * 60 )
+    
+      # we do not have a cache, or the cache has elapsed
+      $stderr.puts "downloading and caching " + url
+      require 'uri'
+      url = URI.parse( url )
+      require 'net/http'
+      resp = 0
+      Net::HTTP.start( url.host, url.port ) { |http|
+        resp = http.post( url.path, url.query )
+        open( cache, "wb") { |file| file.write(resp.body) }
+      }
+      doc = Hpricot( resp.body )
+      return doc
+  
+    else
+    
+      # we have the result in cache
+      $stderr.puts "loading "+url+" from cache"
+      require 'rexml/document'
+      doc = Hpricot( File.new( cache, 'r' ) )
+      return doc
+
+    end
+    
+end
+
+def getFromCache( latitude, longitude )
+  latitude = latitude.to_f.round 1
+  longitude = longitude.to_f.round 1
+  hash = Digest::MD5.hexdigest "#{latitude}#{longitude}"
+  cachename = "cache/#{hash[0..0]}/#{hash}"
+  doc = fetchxml "http://www.heavens-above.com/PassSummary.aspx?lat=#{latitude}&lng=#{longitude}&satid=25544", cachename
+end
+
 def getFlybys( latitude, longitude )
 
   months = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ]
 
   flybys = []
-  url = "http://www.heavens-above.com/PassSummary.aspx?lat=#{latitude}&lng=#{longitude}&satid=25544"
-  doc = Hpricot( open( url, 'User-Agent' => 'http://lookup.liekens.net' ) )
+
+  doc = getFromCache( latitude, longitude )
   counter = 0
   # select the table that contains the flybys
   require 'pp'
